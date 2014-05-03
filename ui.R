@@ -38,9 +38,10 @@ shinyUI(fluidPage(
   , column(2, wellPanel(
 #      h4("Результаты")
      h4("Статистика длительности исполнения")
+    , verbatimTextOutput("calltext") 
     , tableOutput("statistic")
-    ))
 #    , verbatimTextOutput("statistic")
+    ))
   , column(5, wellPanel(
      h4("Выполняемый код")
     , p(htmlOutput("postlink"))

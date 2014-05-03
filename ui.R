@@ -2,9 +2,9 @@ shinyUI(fluidPage(
   titlePanel("Измерение производительности решений задачи pollutantmean()"),
 
   fluidRow(
-  column(5, wellPanel(  
+  column(4, wellPanel(  
      h4("Параметры")
-   , sliderInput("loopnum", h5("Количество запусков"), 1, 17, 1, step=1)
+   , sliderInput("loopnum", h5("Количество запусков"), 3, 17, 5, step=1)
    , h5("Вариант решения:")   
    , selectInput("script"
         , label = ""
@@ -17,12 +17,12 @@ shinyUI(fluidPage(
         , choices = list("нитраты" = 1, "сульфаты" = 2)
         , selected = 1)
    , h5("Мониторы:")   
-   , checkboxInput('allmons', label = "Все", value = TRUE)
+   , checkboxInput('allmons', label = "Все", value = FALSE)
    , conditionalPanel("!input.allmons"  
      , selectInput("monitors"
           , label = ""
-          , choices = as.list(1:332)
-          , selected = NULL
+          , choices = monitors.list
+          , selected = "001"
           , multiple = TRUE
           , selectize = TRUE)
           )
@@ -31,7 +31,7 @@ shinyUI(fluidPage(
         , icon("refresh"))
     ))
   
-  , column(2, wellPanel(
+  , column(3, wellPanel(
      h4("Статистика длительности исполнения")
     , verbatimTextOutput("calltext") 
     , tableOutput("statistic")

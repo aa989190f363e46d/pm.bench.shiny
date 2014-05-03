@@ -8,7 +8,7 @@ shinyServer(function(input, output) {
   output$calltext <- renderPrint({
     sprintf("pollutantmean('specdata', '%s', %s)"
       , switch(input$pollutant,'1' = 'nitrate','2' = 'sulfate')
-      , ifelse(input$allmons,'1:332',sprintf("c(%s)", Reduce(function(x,y) sprintf('%s, %s',x,y),as.numeric(input$monitors)))))
+      , ifelse(input$allmons,'1:332',sprintf("c(%s)", Reduce(function(x,y) sprintf('%s, %s',x,y),input$monitors))))
   })
   
   output$code <- renderPrint({
@@ -20,14 +20,19 @@ shinyServer(function(input, output) {
     input$goButton
 
     isolate({
-      expr <- getCode()
+      expr = getCode()
       eval(expr)
-      ss <- sapply(1:(input$loopnum[1]*10)
-              ,function(x){system.time(do.call('pollutantmean',list( 'specdata'
-                                                                   , switch(input$pollutant,'1' = 'nitrate','2' = 'sulfate')
-                                                                   , ifelse(input$allmons,1:332,as.numeric(input$monitors)))))[c(1,3)]})
+      results <- numeric(input$loopnum[1])
+      arguments <- list( directory = 'specdata'
+                       , pollutant = switch(input$pollutant,'1' = 'nitrate','2' = 'sulfate')
+                       , id = if(input$allmons) monitors.list else as.integer(input$monitors)
+                       )
+      ss = sapply(1:(input$loopnum[1])
+              ,function(x){system.time({results[x] <<- do.call('pollutantmean',arguments)})[c(1,3)]})
       
-      ss <- as.data.frame(t(ss))
+      #ss = rbind(ss,result = results)
+      ss = data.frame(t(ss)[,],result = as.numeric(results))
+      
       rbind(ss,sapply(ss[,],summary))
 
     })

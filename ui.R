@@ -1,7 +1,6 @@
 shinyUI(fluidPage(
   titlePanel("Измерение производительности решений задачи pollutantmean()"),
 
-#  sidebarLayout(sidebarPanel(
   fluidRow(
   column(5, wellPanel(  
      h4("Параметры")
@@ -19,8 +18,7 @@ shinyUI(fluidPage(
         , selected = 1)
    , h5("Мониторы:")   
    , checkboxInput('allmons', label = "Все", value = TRUE)
-   , conditionalPanel("!input.allmons"
-#     , helpText("Можно выбрать несколько позиций", "удерживая ctrl или shift")   
+   , conditionalPanel("!input.allmons"  
      , selectInput("monitors"
           , label = ""
           , choices = as.list(1:332)
@@ -31,16 +29,12 @@ shinyUI(fluidPage(
     , actionButton("goButton"
         , "Обновить результаты"
         , icon("refresh"))
-#   , submitButton("Обновить результаты", icon("refresh"))
     ))
   
-#  , mainPanel(
   , column(2, wellPanel(
-#      h4("Результаты")
      h4("Статистика длительности исполнения")
     , verbatimTextOutput("calltext") 
     , tableOutput("statistic")
-#    , verbatimTextOutput("statistic")
     ))
   , column(5, wellPanel(
      h4("Выполняемый код")

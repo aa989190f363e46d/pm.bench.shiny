@@ -1,0 +1,9 @@
+https://class.coursera.org/rprog-002/forum/thread\?thread_id=1174#(post|comment)-\d+|(?s)<pre>.+?</pre>
+
+(https://class.coursera.org/rprog-002/forum/thread\?thread_id=1174#(post|comment)-\d+\n)+(https://class.coursera.org/rprog-002/forum/thread\?thread_id=1174#(post|comment)-\d+\n) => 3
+<br> => \n
+^(http.+) => # \1\n
+&lt;- => <-
+</?code>|</?pre> => \n
+
+\# https://.+(comment|post)-\d+
